@@ -3,7 +3,7 @@
 --// Create tables
 DROP TABLE IF EXISTS branch CASCADE;
 CREATE TABLE branch (
-    branch VARCHAR(10) PRIMARY KEY,
+    branch_id VARCHAR(10) PRIMARY KEY,
     manager_id VARCHAR(10),
     branch_address VARCHAR(55),
     conntact_number VARCHAR(10) 
@@ -66,10 +66,14 @@ USING isbn::VARCHAR;
 ALTER TABLE branch
 RENAME COLUMN branch TO branch_id;  
 
+--TO rename the column
+ALTER TABLE branch
+RENAME COLUMN branch TO branch_id;
+
 --FOREIGN KEY CONSTRAINTS for datamodel
 
     ALTER TABLE issued_status
-    ADD CONTRAINT fk_members
+    ADD CONSTRAINT fk_members
     FOREIGN KEY (issued_member_id)
     REFERENCES members(member_id);
 
@@ -85,7 +89,13 @@ RENAME COLUMN branch TO branch_id;
 
     ALTER TABLE returned_status
     ADD CONSTRAINT fk_issued_status
-    FOREIGN KEY (issue d_id)
+    FOREIGN KEY (issued_id)
+    REFERENCES issued_status(issued_id);
+
+    ALTER TABLE employees
+    ADD CONSTRAINT fk_branch
+    FOREIGN KEY (branch_id)
+    REFERENCES branch(branch_id);
 
  
 
