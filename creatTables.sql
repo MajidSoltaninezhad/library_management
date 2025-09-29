@@ -91,6 +91,14 @@ RENAME COLUMN branch TO branch_id;
     ADD CONSTRAINT fk_issued_status
     FOREIGN KEY (issued_id)
     REFERENCES issued_status(issued_id);
+<<<<<<< HEAD
+=======
+
+    ALTER TABLE employees
+    ADD CONSTRAINT fk_branch
+    FOREIGN KEY (branch_id)
+    REFERENCES branch(branch_id);
+>>>>>>> 9dd647d (Add foreign key constraints and refine database schema)
 
     ALTER TABLE employees
     ADD CONSTRAINT fk_branch
