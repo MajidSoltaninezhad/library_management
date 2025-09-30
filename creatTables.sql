@@ -91,20 +91,27 @@ RENAME COLUMN branch TO branch_id;
     ADD CONSTRAINT fk_issued_status
     FOREIGN KEY (issued_id)
     REFERENCES issued_status(issued_id);
-<<<<<<< HEAD
-=======
-
-    ALTER TABLE employees
-    ADD CONSTRAINT fk_branch
-    FOREIGN KEY (branch_id)
-    REFERENCES branch(branch_id);
->>>>>>> 9dd647d (Add foreign key constraints and refine database schema)
 
     ALTER TABLE employees
     ADD CONSTRAINT fk_branch
     FOREIGN KEY (branch_id)
     REFERENCES branch(branch_id);
 
+
+    ALTER TABLE employees
+    ADD CONSTRAINT fk_branch
+    FOREIGN KEY (branch_id)
+    REFERENCES branch(branch_id);
+
+
+
+-- import data from csv files
+COPY branch FROM 'D:/PPC/Git/Library_Management/branch.csv' DELIMITER ',' CSV HEADER;
+COPY employees FROM 'D:/PPC/Git/Library_Management/employees.csv' DELIMITER ',' CSV HEADER;
+COPY books FROM 'D:/PPC/Git/Library_Management/books.csv' DELIMITER ',' CSV HEADER;
+COPY members FROM 'D:/PPC/Git/Library_Management/members.csv' DELIMITER ',' CSV HEADER;
+COPY issued_status FROM 'D:/PPC/Git/Library_Management/issued_status.csv' DELIMITER ',' CSV HEADER;
+COPY returned_status FROM 'D:/PPC/Git/Library_Management/returned_status.csv' DELIMITER ',' CSV HEADER;
  
 
 

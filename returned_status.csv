@@ -1,8 +1,5 @@
 "return_id","issued_id","return_book_name","return_date","return_book_isbn"
-"RS101","IS101",NULL,"2023-06-06",NULL
-"RS102","IS105",NULL,"2023-06-07",NULL
-"RS103","IS103",NULL,"2023-08-07",NULL
-"RS104","IS106",NULL,"2024-05-01",NULL
+
 "RS105","IS107",NULL,"2024-05-03",NULL
 "RS106","IS108",NULL,"2024-05-05",NULL
 "RS107","IS109",NULL,"2024-05-07",NULL
