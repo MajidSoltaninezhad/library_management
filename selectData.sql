@@ -41,3 +41,23 @@ SELECT * FROM issued_status;
 SELECT * FROM issued_status
 WHERE issued_emp_id = 'E101';
 
+
+--Task 5: List Members Who Have Issued More Than One Book
+-- Objective: Use GROUP BY to find members who have issued more than one book.
+SELECT issued_member_id, COUNT(*) AS book_count
+FROM issued_status
+GROUP BY issued_member_id
+HAVING COUNT(*) > 1;
+
+--CTAS Operation
+
+--Task 6: Create Summary Tables: Used CTAS to generate new tables based on query results
+-- each book and total book_issued_cnt
+
+SELECT * FROM books as b
+JOIN 
+issued_status as ist
+ON ist.issued_book_isbn = b.isbn;
+
+
+
