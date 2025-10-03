@@ -68,5 +68,41 @@ GROUP BY 1,2;
 
 SELECT * FROM book_cnts;
 
- 
+--Data Analysis & Findings
+--Task 7. Retrieve All Books in a Specific Category:
 
+SELECT DISTINCT category  FROM books;
+
+SELECT * FROM books
+WHERE category = 'Fantasy';
+
+--Task 8: Find Total Rental Income by Category:
+
+SELECT b.category,
+      SUM( b.rental_price),
+      COUNT(*)
+FROM books as b
+JOIN 
+issued_status as ist
+ON ist.issued_book_isbn = b.isbn
+GROUP BY 1;
+ 
+--List Members Who Registered in the Last 180 Days:
+
+SELECT * FROM members
+
+WHERE reg_date >= CURRENT_DATE - INTERVAL '180 days';
+
+--List Employees with Their Branch Manager's Name and their branch details:
+
+SELECT *
+    e.*,
+    b.branch_id,
+    m.emp_name as manager
+
+FROM employees as e
+JOIN branch as b
+ON b.branch_id = e.branch_id
+
+JOIN employees as m
+ON b.manager_id = e.emp_id;
