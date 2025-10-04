@@ -95,14 +95,112 @@ WHERE reg_date >= CURRENT_DATE - INTERVAL '180 days';
 
 --List Employees with Their Branch Manager's Name and their branch details:
 
-SELECT *
-    e.*,
-    b.branch_id,
-    m.emp_name as manager
+SELECT 
+    e1.emp_id,
+    e1.emp_name,
+    e2.emp_name as manager_name,
+    b.*
 
-FROM employees as e
+
+FROM employees as e1
 JOIN branch as b
-ON b.branch_id = e.branch_id
+ON b.branch_id = e1.branch_id
+JOIN employees as e2
+ON b.manager_id = e2.emp_id;
 
-JOIN employees as m
-ON b.manager_id = e.emp_id;
+--Task 11. Create a Table of Books with Rental Price Above a Certain Threshold:
+
+CREATE TABLE expensive_books
+AS
+SELECT * FROM books
+WHERE rental_price > 7.00;
+
+SELECT * FROM expensive_books;
+
+--Task 12: Retrieve the List of Books Not Yet Returned
+
+SELECT 
+  DISTINCT ist.issued_book_name,
+  b.isbn,
+  ist.issued_id
+FROM books as b
+JOIN issued_status as ist
+ON ist.issued_book_isbn = b.isbn
+WHERE ist.issued_id NOT IN (
+  SELECT issued_id FROM returned_status
+);
+
+SELECT * FROM returned_status;
+
+--Task 13: Identify Members with Overdue Books
+
+  SELECT
+    ist.*,
+    CASE 
+      WHEN r.return_date IS NULL THEN CURRENT_DATE - ist.issued_date
+      ELSE  r.return_date - ist.issued_date
+    END as overdue_days
+  FROM issued_status as ist
+  LEFT JOIN returned_status as r
+ON ist.issued_id = r.issued_id;
+
+--Task 14: Update Book Status on Return
+
+CREATE OR REPLACE PROCEDURE add_return_records(p_return_id VARCHAR(10), p_issued_id VARCHAR(10), p_book_quality VARCHAR(10))
+LANGUAGE plpgsql
+AS $$
+
+DECLARE
+    v_isbn VARCHAR(50);
+    v_book_name VARCHAR(80);
+
+BEGIN
+    -- all your logic and code
+    -- inserting into returns based on users input
+    INSERT INTO returned_status(return_id, issued_id, return_date)
+    VALUES
+    (p_return_id, p_issued_id, CURRENT_DATE);
+
+    SELECT
+        issued_book_isbn,
+        issued_book_name
+        INTO
+        v_isbn,
+        v_book_name
+    FROM issued_status
+    WHERE issued_id = p_issued_id;
+
+    UPDATE books
+    SET status = 'yes'
+    WHERE isbn = v_isbn;
+
+    RAISE NOTICE 'Thank you for returning the book: %', v_book_name;
+
+END;
+$$
+
+
+-- Testing FUNCTION add_return_records
+
+issued_id = IS135
+ISBN = WHERE isbn = '978-0-307-58837-1'
+
+SELECT * FROM books
+WHERE isbn = '978-0-307-58837-1';
+
+SELECT * FROM issued_status
+WHERE issued_book_isbn = '978-0-307-58837-1';
+
+SELECT * FROM returned_status
+WHERE issued_id = 'IS135';
+
+-- calling function
+CALL add_return_records('RS138', 'IS135', 'Good');
+
+-- calling function
+CALL add_return_records('RS148', 'IS140', 'Good');
+
+SELECT * FROM returned_status;
+
+
+
